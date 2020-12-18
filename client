@@ -1,0 +1,35 @@
+import java.io.*;
+import java.net.*;
+public class Client {
+static final int port = 1200;
+public static void main(String[] args) throws Exception {
+System.out.println("Demande de connexion");
+Socket socket = new Socket("127.0.0.1", port); // construit un socket client connecté à la
+machine et le port spécifié
+System.out.println("Connexion établie");
+// On crée maintenant les flux d'entrée-sortie du Serveur
+// Un BufferedReader permet de lire par ligne.
+BufferedReader entreeClient = new BufferedReader( new
+InputStreamReader(socket.getInputStream()) );
+// Un PrintWriter possède toutes les opérations print classiques.
+PrintWriter sortieClient = new PrintWriter( new BufferedWriter( new
+OutputStreamWriter(socket.getOutputStream())), true);
+BufferedReader keybord=new BufferedReader(new InputStreamReader(System.in)); //
+permet de lire à partir d'un clavier
+System.out.println("Donnez le nombre total d'entiers que vous allez saisir");
+int nbrToatal=Integer.parseInt(keybord.readLine());
+for(int i=1;i<=nbrToatal;i++){
+String str=entreeClient.readLine();
+System.out.println(str);
+String strKeybord = keybord.readLine();
+sortieClient.println(strKeybord);
+}
+System.out.println("END"); // message de terminaison
+sortieClient.println("END") ; // Le client envoye le message de terminaison "END" au
+Serveur
+entreeClient.close();
+sortieClient.close();
+// Fermeture du socket client
+socket.close();
+}
+}
